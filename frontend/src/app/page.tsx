@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 type FormData = {
   diseaseName: string
@@ -42,11 +43,14 @@ export default function Home() {
   const onSubmit = async (data: FormData) => {
     setIsGenerating(true)
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      // Call our drug classification endpoint
+      const response = await axios.get('/api/druggen/v1/generate')
       
-      // Store the form data in localStorage for the results page
-      localStorage.setItem('drugDiscoveryFormData', JSON.stringify(data))
+      // Store both form data and drug classification data in localStorage
+      localStorage.setItem('drugDiscoveryFormData', JSON.stringify({
+        ...data,
+        drugClassification: response.data
+      }))
       
       // Show success message
       toast.success('Drug candidates generated successfully!')
