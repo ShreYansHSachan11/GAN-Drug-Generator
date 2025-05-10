@@ -1,6 +1,6 @@
 {
   "/not-found": "app/not-found.js",
   "/page": "app/page.js",
-  "/api/druggen/v1/generate/route": "app/api/druggen/v1/generate/route.js",
-  "/results/page": "app/results/page.js"
+  "/results/page": "app/results/page.js",
+  "/api/druggen/v1/generate/route": "app/api/druggen/v1/generate/route.js"
 }

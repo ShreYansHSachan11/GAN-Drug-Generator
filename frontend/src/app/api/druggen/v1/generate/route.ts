@@ -5,7 +5,10 @@ export async function GET() {
     // Make the DrugOn API call
     const response = await fetch('https://mtb.bioinf.med.uni-goettingen.de/drugon/v1/getDrugClassification/Olaparib', {
       headers: {
-        'accept': '*/*'
+        'accept': '*/*',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     })
     const data = await response.json()
@@ -13,13 +16,26 @@ export async function GET() {
     // Wait for 10 seconds
     await new Promise(resolve => setTimeout(resolve, 10000))
 
-    // Return the drug classification data
-    return NextResponse.json(data)
+    // Return the drug classification data with cache control headers
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    })
   } catch (error) {
     console.error('Error fetching from DrugOn API:', error)
     return NextResponse.json(
       { error: 'Failed to fetch drug classification data' },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     )
   }
 } 

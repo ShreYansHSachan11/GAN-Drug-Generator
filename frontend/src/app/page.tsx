@@ -43,8 +43,13 @@ export default function Home() {
   const onSubmit = async (data: FormData) => {
     setIsGenerating(true)
     try {
-      // Call our drug classification endpoint
-      const response = await axios.get('/api/druggen/v1/generate')
+      // Call our drug classification endpoint with cache prevention
+      const response = await axios.get('/api/druggen/v1/generate', {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        }
+      })
       
       // Store both form data and drug classification data in localStorage
       localStorage.setItem('drugDiscoveryFormData', JSON.stringify({
